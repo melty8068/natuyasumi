@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "expo-notifications": "*",
+    "expo-constants": "*",
+    "expo-haptics": "*",
+    "expo-location": "*",
+    "@react-native-async-storage/async-storage": "*",
+    "react-native-paper": "4.9.2",
+    "@expo/vector-icons": "^15.0.3"
+  }
+}
