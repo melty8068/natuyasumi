@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#7EC8F5">
+<title>なつやすみ大作戦</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#3B3355; --ink2:#6E6A8A; --line:#E7E3F3;
+  --sun1:#7EC8F5; --sun2:#FFD84D; --sun3:#FF8A65;
+  --rain1:#8FB8E8; --rain2:#A8E0E0; --rain3:#B39DDB;
+  --c1:var(--sun1); --c2:var(--sun2); --c3:var(--sun3);
+  --card:#FFFFFF; --ok:#4CD07D;
+  --r:22px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  font-family:"M PLUS Rounded 1c","Hiragino Maru Gothic ProN","ヒラギノ丸ゴ ProN W4",system-ui,sans-serif;
+  color:var(--ink); font-weight:700;
+  background:linear-gradient(180deg,var(--c1) 0%, #FDF6E6 42%, #FDF6E6 100%);
+  background-attachment:fixed;
+  min-height:100vh; padding-bottom:96px;
+}
+body.rain{background:linear-gradient(180deg,var(--c1) 0%, #EFF3FA 42%, #EFF3FA 100%)}
+.wrap{max-width:520px;margin:0 auto;padding:14px 14px 0}
+
+/* ---- header ---- */
+.hd{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.logo{font-size:22px;font-weight:800;color:#fff;text-shadow:0 3px 0 rgba(0,0,0,.12);letter-spacing:.02em}
+.logo small{display:block;font-size:11px;opacity:.9;font-weight:700;letter-spacing:.3em}
+.datebox{margin-left:auto;background:rgba(255,255,255,.9);border-radius:999px;padding:7px 12px;font-size:13px;display:flex;align-items:center;gap:6px;box-shadow:0 3px 0 rgba(0,0,0,.06)}
+.datebox input{border:0;background:transparent;font:inherit;color:var(--ink);width:112px;font-size:13px}
+
+/* ---- weather switch (signature) ---- */
+.wsw{display:flex;background:rgba(255,255,255,.55);border-radius:999px;padding:5px;margin-bottom:12px;box-shadow:inset 0 2px 6px rgba(0,0,0,.08)}
+.wsw button{flex:1;border:0;background:transparent;font:inherit;font-size:16px;font-weight:800;color:#fff;padding:12px 0;border-radius:999px;transition:.18s;display:flex;align-items:center;justify-content:center;gap:8px}
+.wsw button .e{font-size:22px}
+.wsw button.on{background:#fff;color:var(--ink);box-shadow:0 3px 0 rgba(0,0,0,.08)}
+
+/* ---- today banner ---- */
+.pat{background:var(--card);border-radius:var(--r);padding:14px 16px;box-shadow:0 6px 0 rgba(59,51,85,.08);margin-bottom:12px}
+.pat .top{display:flex;align-items:center;gap:10px}
+.badge{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-size:22px;font-weight:800;color:#fff;background:var(--c3);box-shadow:0 3px 0 rgba(0,0,0,.12)}
+.pat h2{margin:0;font-size:17px}
+.pat .sub{font-size:12px;color:var(--ink2);font-weight:700}
+.memo{margin-top:10px;font-size:12px;line-height:1.6;background:#FFF8E1;border-radius:12px;padding:8px 10px;color:#7A6A2F}
+body.rain .memo{background:#EAF1FB;color:#4A5C7A}
+
+/* ---- tabs ---- */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:40;background:#fff;border-top:2px solid var(--line);display:flex;padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+.tabs button{flex:1;border:0;background:transparent;font:inherit;font-weight:800;font-size:10px;color:#B6B2C7;padding:6px 0;display:flex;flex-direction:column;align-items:center;gap:2px}
+.tabs button .e{font-size:21px;filter:grayscale(1);opacity:.5}
+.tabs button.on{color:var(--ink)}
+.tabs button.on .e{filter:none;opacity:1;transform:translateY(-2px)}
+.pill{position:absolute;top:2px;right:calc(50% - 26px);background:var(--sun3);color:#fff;font-size:9px;border-radius:99px;padding:1px 5px}
+
+/* ---- timeline ---- */
+.tl{position:relative;padding-left:8px}
+.tl:before{content:"";position:absolute;left:29px;top:14px;bottom:14px;width:4px;border-radius:4px;background:repeating-linear-gradient(180deg,var(--c1) 0 8px,transparent 8px 14px)}
+.ev{display:flex;gap:12px;margin-bottom:10px;position:relative}
+.dot{width:44px;height:44px;flex:0 0 44px;border-radius:50%;background:#fff;border:3px solid var(--c1);display:grid;place-items:center;font-size:20px;z-index:1;box-shadow:0 3px 0 rgba(59,51,85,.08)}
+.ev.go .dot{border-color:var(--c3);animation:pop 1.6s infinite}
+@keyframes pop{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.body{flex:1;background:var(--card);border-radius:18px;padding:11px 13px;box-shadow:0 4px 0 rgba(59,51,85,.07);display:flex;align-items:center;gap:10px}
+.body .t{font-size:12px;color:var(--c3);letter-spacing:.04em}
+.body .n{font-size:15px;line-height:1.35}
+.body .note{font-size:11px;color:var(--ink2);margin-top:2px;line-height:1.4}
+.chk{margin-left:auto;width:34px;height:34px;flex:0 0 34px;border-radius:12px;border:3px solid var(--line);background:#fff;display:grid;place-items:center;font-size:17px;color:transparent}
+.ev.done .body{opacity:.45}
+.ev.done .chk{background:var(--ok);border-color:var(--ok);color:#fff}
+.ev.now .body{outline:3px solid var(--c2);outline-offset:2px}
+.ev.now:after{content:"いま";position:absolute;top:-8px;left:52px;background:var(--c2);color:#fff;font-size:10px;padding:2px 8px;border-radius:99px}
+.ev.go .body .n{color:#E2544B}
+
+/* ---- missions ---- */
+.card{background:var(--card);border-radius:var(--r);padding:14px;box-shadow:0 6px 0 rgba(59,51,85,.08);margin-bottom:12px}
+.card h3{margin:0 0 10px;font-size:15px;display:flex;align-items:center;gap:8px}
+.ms{display:flex;align-items:center;gap:10px;padding:10px;border-radius:14px;background:#FAF8FF;margin-bottom:8px}
+.ms .e{font-size:22px}
+.ms .n{font-size:14px}
+.ms .pt{margin-left:auto;font-size:11px;color:var(--ink2);margin-right:8px}
+.ms.done{opacity:.45}
+.ms.done .n{text-decoration:line-through}
+.who{display:flex;gap:8px;margin-bottom:12px}
+.who button{flex:1;border:0;font:inherit;font-weight:800;font-size:14px;padding:12px;border-radius:16px;background:rgba(255,255,255,.6);color:var(--ink2);box-shadow:0 3px 0 rgba(59,51,85,.07)}
+.who button.on{background:#fff;color:var(--ink);box-shadow:0 3px 0 var(--c3)}
+.who input{border:0;background:transparent;font:inherit;text-align:center;width:100%}
+
+/* ---- points / stickers ---- */
+.score{display:flex;gap:10px;margin-bottom:12px}
+.sc{flex:1;background:var(--card);border-radius:18px;padding:12px;text-align:center;box-shadow:0 5px 0 rgba(59,51,85,.08)}
+.sc .v{font-size:26px;font-weight:800;color:var(--c3)}
+.sc .l{font-size:11px;color:var(--ink2)}
+.sheet{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.sl{aspect-ratio:1;border-radius:14px;background:#F6F3FF;display:grid;place-items:center;font-size:24px;border:2px dashed #DCD5F0}
+.sl.f{background:#fff;border:2px solid var(--c2);box-shadow:0 3px 0 rgba(59,51,85,.08);animation:in .4s}
+@keyframes in{from{transform:scale(.4) rotate(-20deg);opacity:0}}
+.shop{display:flex;align-items:center;gap:10px;padding:10px;border-radius:14px;background:#FFF8E1;margin-bottom:8px}
+body.rain .shop{background:#EAF1FB}
+.shop .e{font-size:22px}
+.shop button{margin-left:auto;border:0;font:inherit;font-weight:800;font-size:12px;color:#fff;background:var(--c3);padding:9px 14px;border-radius:12px;box-shadow:0 3px 0 rgba(0,0,0,.12)}
+.shop button:disabled{background:#D6D2E4;box-shadow:0 3px 0 rgba(0,0,0,.06)}
+
+/* ---- calendar ---- */
+.cal{background:var(--card);border-radius:var(--r);padding:12px;box-shadow:0 6px 0 rgba(59,51,85,.08);margin-bottom:12px}
+.cal h3{margin:0 0 8px;font-size:15px}
+.g{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.g .h{text-align:center;font-size:10px;color:var(--ink2);padding:2px 0}
+.d{aspect-ratio:.82;border-radius:10px;background:#FAF8FF;padding:3px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;font-size:10px;border:2px solid transparent}
+.d .num{font-size:12px}
+.d .p{margin-top:2px;width:19px;height:19px;border-radius:7px;display:grid;place-items:center;color:#fff;font-size:10px;font-weight:800}
+.d.sel{border-color:var(--c3)}
+.d.empty{background:transparent}
+.pA{background:#FF8A65}.pB{background:#7E9CF5}.pC{background:#4CD07D}.pD{background:#F5A0C8}.pS{background:#5BC8E0}.pF{background:#C8C4D8}
+.lg{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;font-size:10px;color:var(--ink2)}
+.lg span{display:flex;align-items:center;gap:4px}
+.lg i{width:12px;height:12px;border-radius:4px;display:block}
+
+/* ---- alarm overlay ---- */
+#al{position:fixed;inset:0;z-index:99;background:rgba(59,51,85,.75);display:none;place-items:center;padding:20px}
+#al.on{display:grid}
+#al .b{background:#fff;border-radius:26px;padding:26px 20px;text-align:center;max-width:340px;width:100%;animation:sh .5s}
+@keyframes sh{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+#al .e{font-size:64px}
+#al h2{margin:8px 0 4px;font-size:22px}
+#al p{margin:0 0 18px;font-size:14px;color:var(--ink2)}
+#al button{border:0;font:inherit;font-weight:800;font-size:16px;color:#fff;background:var(--c3);padding:14px 30px;border-radius:16px;box-shadow:0 4px 0 rgba(0,0,0,.15)}
+.toast{position:fixed;left:50%;top:16px;transform:translateX(-50%);background:var(--ok);color:#fff;padding:10px 18px;border-radius:99px;font-size:14px;z-index:98;box-shadow:0 4px 0 rgba(0,0,0,.12);animation:tin .3s}
+@keyframes tin{from{transform:translate(-50%,-30px);opacity:0}}
+.bell{width:100%;border:0;font:inherit;font-weight:800;font-size:13px;padding:12px;border-radius:16px;background:#fff;color:var(--ink);box-shadow:0 4px 0 rgba(59,51,85,.08);margin-bottom:12px}
+.hide{display:none}
+.auto{font-size:11px;color:#fff;text-align:center;margin:-6px 0 12px;font-weight:700;text-shadow:0 1px 2px rgba(0,0,0,.15)}
+.reset{width:100%;border:0;font:inherit;font-weight:800;font-size:12px;padding:11px;border-radius:14px;background:rgba(255,255,255,.7);color:var(--ink2);box-shadow:0 3px 0 rgba(59,51,85,.06);margin:2px 0 14px}
+.reset:active{transform:translateY(2px)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hd">
+    <div class="logo">なつやすみ大作戦<small>MISSION 2026</small></div>
+    <label class="datebox">📅<input type="date" id="dt" min="2026-07-16" max="2026-08-31"></label>
+  </div>
+
+  <div class="wsw">
+    <button id="bSun" class="on"><span class="e">☀️</span>はれ</button>
+    <button id="bRain"><span class="e">☔️</span>あめ</button>
+  </div>
+  <div class="auto" id="auto">🛰️ きょうの天気を しらべています…</div>
+
+  <button class="bell" id="bell">🔔 しゅっぱつアラームを オンにする</button>
+
+  <div class="pat">
+    <div class="top">
+      <div class="badge" id="pBadge">D</div>
+      <div><h2 id="pName">パターンD</h2><div class="sub" id="pDate">7月16日（木）</div></div>
+    </div>
+    <div class="memo" id="pMemo"></div>
+  </div>
+
+  <div id="vToday"></div>
+  <div id="vMission" class="hide"></div>
+  <div id="vSticker" class="hide"></div>
+  <div id="vCal" class="hide"></div>
+</div>
+
+<nav class="tabs">
+  <button data-v="Today" class="on"><span class="e">📋</span>きょう</button>
+  <button data-v="Mission"><span class="e">🎯</span>ミッション</button>
+  <button data-v="Sticker"><span class="e">🏅</span>シールちょう</button>
+  <button data-v="Cal"><span class="e">🗓️</span>カレンダー</button>
+</nav>
+
+<div id="al"><div class="b">
+  <div class="e" id="alE">🏊‍♂️</div>
+  <h2 id="alT">あと10ぷんで しゅっぱつ！</h2>
+  <p id="alP"></p>
+  <button id="alBtn">わかった！ 👍</button>
+</div></div>
+
+<script>
+/* ================= データ（Excelそのまま） ================= */
+const CAL = {
+"07-16":["D","木","☔雨なら17:10歩きでそろばんへ！ / 塾：質問・補講日"],
+"07-17":["D","金","☔雨なら17:10歩きでそろばんへ！ / 塾：質問・補講日"],
+"07-18":["D","土","☔雨なら16:00歩きでそろばんへ！ / 塾：質問・補講日"],
+"07-19":["F","日","塾：休校日"],
+"07-20":["D","月","☔雨なら17:10歩きでそろばんへ！ / 塾：休校日"],
+"07-21":["B","火","🏫塾は19:15頃帰宅"],
+"07-22":["D","水","☔雨なら17:10歩きでそろばんへ！"],
+"07-23":["B","木","🏫塾は19:15頃帰宅"],
+"07-24":["D","金","☔雨なら17:10歩きでそろばんへ！"],
+"07-25":["D","土","☔雨なら16:00歩きでそろばんへ！ / 塾：ケアタイム①"],
+"07-26":["F","日","塾：休校日"],
+"07-27":["D","月","☔雨なら17:10歩きでそろばんへ！ / 月曜そろばん(塾は英語のみ休み)"],
+"07-28":["B","火","🏫塾は19:15頃帰宅"],
+"07-29":["D","水","☔雨なら17:10歩きでそろばんへ！"],
+"07-30":["A","木","☔雨なら10:42電車(甲子園→鳴尾) / 🏫塾は19:15頃帰宅"],
+"07-31":["C","金","☔雨なら10:42電車 / ☔雨なら17:10歩きでそろばんへ！"],
+"08-01":["C","土","☔雨なら10:42電車 / ☔雨なら16:00歩きでそろばんへ！ / 塾：ケアタイム②"],
+"08-02":["S","日","☔雨なら10:42電車(甲子園→鳴尾)"],
+"08-03":["C","月","☔雨なら10:42電車 / ☔雨なら17:10歩き / 月曜そろばん(塾は英語のみ休み)"],
+"08-04":["C","火","☔雨なら10:42電車 / ☔雨なら17:10歩き / 塾なし(水泳のみ)"],
+"08-05":["C","水","☔雨なら10:42電車 / ☔雨なら17:10歩きでそろばんへ！"],
+"08-06":["A","木","☔雨なら10:42電車(甲子園→鳴尾) / 🏫塾は19:15頃帰宅"],
+"08-07":["D","金","☔雨なら17:10歩きでそろばんへ！"],
+"08-08":["D","土","☔雨なら16:00歩きでそろばんへ！"],
+"08-09":["F","日","★ お盆休み"],
+"08-10":["D","月","☔雨なら17:10歩きでそろばんへ！ / ★ お盆休み"],
+"08-11":["D","火","☔雨なら17:10歩きでそろばんへ！ / ★ お盆休み"],
+"08-12":["D","水","☔雨なら17:10歩きでそろばんへ！ / ★ お盆休み"],
+"08-13":["D","木","☔雨なら17:10歩きでそろばんへ！ / ★ お盆休み"],
+"08-14":["D","金","☔雨なら17:10歩きでそろばんへ！ / ★ お盆休み"],
+"08-15":["D","土","☔雨なら16:00歩きでそろばんへ！ / ★ お盆休み"],
+"08-16":["F","日","★ お盆休み"],
+"08-17":["C","月","☔雨なら10:42電車 / ☔雨なら17:10歩きでそろばんへ！"],
+"08-18":["C","火","☔雨なら10:42電車 / ☔雨なら17:10歩き / 塾なし(水泳のみ)"],
+"08-19":["C","水","☔雨なら10:42電車 / ☔雨なら17:10歩きでそろばんへ！"],
+"08-20":["A","木","☔雨なら10:42電車(甲子園→鳴尾) / 🏫塾は19:15頃帰宅"],
+"08-21":["D","金","☔雨なら17:10歩きでそろばんへ！"],
+"08-22":["D","土","☔雨なら16:00歩きでそろばんへ！ / 塾：ケアタイム③"],
+"08-23":["F","日",""],
+"08-24":["D","月","☔雨なら17:10歩きでそろばんへ！ / 月曜そろばん(塾は英語のみ休み)"],
+"08-25":["B","火","🏫塾は19:15頃帰宅"],
+"08-26":["D","水","☔雨なら17:10歩きでそろばんへ！ / 塾：質問・補講日"],
+"08-27":["D","木","☔雨なら17:10歩きでそろばんへ！ / 塾：休校日"],
+"08-28":["D","金","☔雨なら17:10歩きでそろばんへ！ / 塾：質問・補講日"],
+"08-29":["D","土","☔雨なら16:00歩きでそろばんへ！ / 塾：質問・補講日"],
+"08-30":["F","日",""],
+"08-31":["D","月","☔雨なら17:10歩きでそろばんへ！ / 🏫 2学期スタート"]
+};
+const PNAME={A:"パターンA【水泳＋塾】",B:"パターンB【塾のみ】",C:"パターンC【水泳＋そろばん】",D:"パターンD【そろばんのみ】",S:"水泳のみ（日曜）",F:"お休み・フリー"};
+const PCOL ={A:"#FF8A65",B:"#7E9CF5",C:"#4CD07D",D:"#F5A0C8",S:"#5BC8E0",F:"#C8C4D8"};
+
+/* go:true = しゅっぱつアラームが鳴る */
+const T={};
+T.A_sun=[
+ ["07:00","🌅","起床・あさごはん"],["08:00","📝","おうち学習"],
+ ["11:15","🏊‍♂️","水泳へ しゅっぱつ！","じてんしゃで15ふん",1],
+ ["11:45","🏊‍♂️","水泳教室（11:45〜12:45）"],
+ ["12:45","🍦","アイス買い物（よさん200円）"],
+ ["13:00","🏠","おうちに帰る"],["13:30","🍙","お昼ごはん"],
+ ["14:30","🎒","塾のじゅんび・すこし休憩"],
+ ["15:00","🎒","塾へ しゅっぱつ！","そのあと自習室（1時間）",1],
+ ["16:15","🏫","夏期講習（16:15〜18:45）"],
+ ["19:15","🏠","19:15ごろ 帰宅！"],["19:30","✨","よるの時間"]];
+T.A_rain=[
+ ["07:00","🌅","起床・あさごはん"],["08:00","📝","おうち学習","10:25から 雨のしたく"],
+ ["10:30","🚉","しゅっぱつ！ 甲子園駅へ","かさ・電車のじゅんび",1],
+ ["10:42","🚃","10:42の電車にのる ➡ 鳴尾駅"],
+ ["11:45","🏊‍♂️","水泳教室（11:45〜12:45）"],
+ ["13:00","🚃","鳴尾駅から電車で帰る"],
+ ["13:45","🏠","13:45〜14:00ごろ 帰宅"],["14:00","🍙","お昼ごはん"],
+ ["15:00","🎒","塾へ しゅっぱつ！","そのあと自習室（1時間）",1],
+ ["16:15","🏫","夏期講習（16:15〜18:45）"],
+ ["19:15","🏠","19:15ごろ 帰宅！"],["19:30","✨","よるの時間"]];
+T.B_sun=[
+ ["07:00","🌅","起床・あさごはん"],["08:00","📝","おうち学習"],
+ ["12:00","🍙","お昼ごはん（1時間）"],["13:00","🎮","じゆう時間（ゆっくりしてね）"],
+ ["15:00","🎒","塾へ しゅっぱつ！","そのあと自習室（1時間）",1],
+ ["16:15","🏫","夏期講習（16:15〜18:45）"],
+ ["19:15","🏠","19:15ごろ 帰宅！"],["19:30","✨","よるの時間"]];
+T.B_rain=T.B_sun;
+T.C_sun=[
+ ["07:00","🌅","起床・あさごはん"],["08:00","📝","おうち学習"],
+ ["11:15","🏊‍♂️","水泳へ しゅっぱつ！","じてんしゃで15ふん",1],
+ ["11:45","🏊‍♂️","水泳教室（11:45〜12:45）"],
+ ["12:45","🍦","アイス買い物（よさん200円）"],
+ ["13:00","🏠","おうちに帰る"],["13:30","🍙","お昼ごはん"],
+ ["14:30","🎮","じゆう時間＆ミッション","読書・お手伝いなど"],
+ ["17:20","🧮","そろばんへ しゅっぱつ！","🚲 じてんしゃで！",1],
+ ["17:40","🧮","そろばん（17:40〜18:30）"],
+ ["18:45","🏠","おうちに帰る（18:45ごろ）"],["19:00","✨","よるの時間"]];
+T.C_rain=[
+ ["07:00","🌅","起床・あさごはん"],["08:00","📝","おうち学習","10:25から 雨のしたく"],
+ ["10:30","🚉","しゅっぱつ！ 甲子園駅へ","かさ・電車のじゅんび",1],
+ ["10:42","🚃","10:42の電車にのる ➡ 鳴尾駅"],
+ ["11:45","🏊‍♂️","水泳教室（11:45〜12:45）"],
+ ["13:00","🚃","鳴尾駅から電車で帰る"],
+ ["13:45","🏠","13:45〜14:00ごろ 帰宅"],["14:00","🍙","お昼ごはん"],
+ ["15:00","🎮","じゆう時間＆ミッション"],
+ ["17:10","🧮","そろばんへ しゅっぱつ！","🚶 あるいて行く！",1],
+ ["17:40","🧮","そろばん（17:40〜18:30）"],
+ ["18:45","🏠","おうちに帰る（18:45ごろ）"],["19:00","✨","よるの時間"]];
+T.D_sun=[
+ ["07:00","🌅","起床・あさごはん"],["08:00","📝","おうち学習"],
+ ["12:00","🍙","お昼ごはん（1時間）"],["13:00","🎮","じゆう時間＆ミッション"],
+ ["17:20","🧮","そろばんへ しゅっぱつ！","🚲 じてんしゃで！",1],
+ ["17:40","🧮","そろばん（17:40〜18:30）"],
+ ["18:45","🏠","おうちに帰る"],["19:00","✨","よるの時間"]];
+T.D_rain=[
+ ["07:00","🌅","起床・あさごはん"],["08:00","📝","おうち学習"],
+ ["12:00","🍙","お昼ごはん（1時間）"],["13:00","🎮","じゆう時間＆ミッション"],
+ ["17:10","🧮","そろばんへ しゅっぱつ！","🚶 あるいて行く！",1],
+ ["17:40","🧮","そろばん（17:40〜18:30）"],
+ ["18:45","🏠","おうちに帰る"],["19:00","✨","よるの時間"]];
+T.S_sun=[
+ ["07:00","🌅","起床・あさごはん"],["08:00","📝","おうち学習"],
+ ["11:15","🏊‍♂️","水泳へ しゅっぱつ！","じてんしゃで15ふん",1],
+ ["11:45","🏊‍♂️","水泳教室（11:45〜12:45）"],
+ ["12:45","🍦","アイス買い物（よさん200円）"],
+ ["13:00","🏠","おうちに帰る"],["13:30","🍙","お昼ごはん"],
+ ["14:30","🎮","じゆう時間＆ミッション"],["19:00","✨","よるの時間"]];
+T.S_rain=[
+ ["07:00","🌅","起床・あさごはん"],["08:00","📝","おうち学習","10:25から 雨のしたく"],
+ ["10:30","🚉","しゅっぱつ！ 甲子園駅へ",'かさ・電車のじゅんび',1],
+ ["10:42","🚃","10:42の電車にのる ➡ 鳴尾駅"],
+ ["11:45","🏊‍♂️","水泳教室（11:45〜12:45）"],
+ ["13:00","🚃","鳴尾駅から電車で帰る"],["13:45","🏠","13:45〜14:00ごろ 帰宅"],
+ ["14:00","🍙","お昼ごはん"],["15:00","🎮","じゆう時間＆ミッション"],["19:00","✨","よるの時間"]];
+T.F_sun=[
+ ["07:00","🌅","起床・あさごはん"],["08:00","📝","おうち学習"],
+ ["12:00","🍙","お昼ごはん"],["13:00","🎮","じゆう時間＆ミッション"],["19:00","✨","よるの時間"]];
+T.F_rain=T.F_sun;
+
+/* 土曜のそろばん（C/D）だけ時間がちがう */
+const SAT={"17:20":"16:10","17:10":"16:00","17:40":"16:30","18:45":"18:15"};
+function buildTL(p,w,dow){
+  let list=(T[p+"_"+w]||T.F_sun).map(a=>a.slice());
+  if(dow==="土"&&(p==="C"||p==="D")){
+    list=list.map(e=>{
+      if(SAT[e[0]]){e[0]=SAT[e[0]];
+        if(e[2].indexOf("そろばん（")===0)e[2]="そろばん（16:30〜18:00）";
+        if(e[3])e[3]+="（土曜の時間だよ）"; else if(e[4])e[3]="土曜は はやめ！";
+      } return e;});
+    list.sort((a,b)=>a[0]<b[0]?-1:1);
+  }
+  return list;
+}
+
+const MISSIONS=[
+ ["m1","📚","なつやすみの宿題（ドリル）",10],
+ ["m2","🔬","自由研究をすすめる",15],
+ ["m3","🗣️","音読",5],
+ ["m4","🧮","そろばんの練習",10],
+ ["m5","🧹","お手伝い（せんたく・食器）",10],
+ ["m6","📖","読書（15分）",5],
+ ["m7","🎒","あしたのじゅんび・かたづけ",5]];
+const SHOP=[
+ ["🍦","アイス（200円）",50],["🥤","ジュース",30],
+ ["🎮","ゲーム 30分ふやす",60],["🍭","おかし1こ",40],
+ ["🎁","週まつスペシャル",150]];
+const STK=["⭐","🏆","🚀","⚽","🦖","🐬","🍉","🎸","🐉","🔥","🌈","🦁","🍩","👾","🥇","🐢","🎯","🍀"];
+
+/* ================= ストレージ ================= */
+const DB={
+ async get(k){try{ if(window.storage){const r=await window.storage.get(k,false);return r?JSON.parse(r.value):null;} return JSON.parse(localStorage.getItem(k)); }catch(e){return null;}},
+ async set(k,v){try{ if(window.storage){await window.storage.set(k,JSON.stringify(v),false);return;} localStorage.setItem(k,JSON.stringify(v)); }catch(e){}}
+};
+let S={kids:[{name:"秋",pt:0,used:0,stk:[]},{name:"晴",pt:0,used:0,stk:[]}],done:{},kid:0,w:"sun",autoDay:"",manual:false};
+const save=()=>DB.set("natsu2026",S);
+
+/* ================= 音 ================= */
+let AC;
+function tone(f,t,d,type){AC=AC||new (window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.type=type||"triangle";o.frequency.value=f;o.connect(g);g.connect(AC.destination);g.gain.setValueAtTime(.0001,AC.currentTime+t);g.gain.exponentialRampToValueAtTime(.25,AC.currentTime+t+.01);g.gain.exponentialRampToValueAtTime(.0001,AC.currentTime+t+d);o.start(AC.currentTime+t);o.stop(AC.currentTime+t+d+.02);}
+const sPoint=()=>{[523,659,784,1047].forEach((f,i)=>tone(f,i*.07,.18));};
+const sAlarm=()=>{[880,988,880,988,1175,988,880].forEach((f,i)=>tone(f,i*.16,.14,"square"));};
+const sLevel=()=>{[659,784,988,1319].forEach((f,i)=>tone(f,i*.1,.35));};
+
+/* ================= 画面 ================= */
+const $=s=>document.querySelector(s);
+const key=d=>d.slice(5); // "2026-07-16" -> "07-16"
+let CUR="2026-07-16";
+const hm=s=>{const[a,b]=s.split(":");return +a*60+ +b;};
+const nowMin=()=>{const d=new Date();return d.getHours()*60+d.getMinutes();};
+const isToday=()=>{const d=new Date();return CUR===d.toISOString().slice(0,10);};
+
+function dstate(){const k=key(CUR);S.done[k]=S.done[k]||[[],[]];return S.done[k];}
+function has(t,id){return dstate()[S.kid].indexOf(t+id)>=0;}
+function toggle(t,id,pt){
+  const arr=dstate()[S.kid],k=t+id,i=arr.indexOf(k),kid=S.kids[S.kid];
+  if(i>=0){arr.splice(i,1);kid.pt=Math.max(0,kid.pt-pt);}
+  else{
+    arr.push(k);kid.pt+=pt;sPoint();
+    const need=Math.floor(kid.pt/20);
+    if(kid.stk.length<need){while(kid.stk.length<need)kid.stk.push(STK[Math.floor(Math.random()*STK.length)]);
+      sLevel();toast("シールを1まい ゲット！ 🎉");}
+    else toast("+"+pt+"pt！ よくできました 💮");
+  }
+  save();render();
+}
+function ptOf(k){
+  if(k[0]==="m"){const m=MISSIONS.find(x=>x[0]===k.slice(1));return m?m[3]:0;}
+  return 5;
+}
+function resetDay(all){
+  const k=key(CUR),d=dstate();
+  const targets=all?[0,1]:[S.kid];
+  const names=targets.map(i=>S.kids[i].name).join("と");
+  if(!confirm(`${(+k.slice(0,2))}月${(+k.slice(3))}日 の ${names} のチェックとポイントを ぜんぶ 0に もどします。いいですか？`))return;
+  targets.forEach(i=>{
+    const kid=S.kids[i];
+    const sum=d[i].reduce((a,x)=>a+ptOf(x),0);
+    kid.pt=Math.max(0,kid.pt-sum);
+    kid.used=Math.min(kid.used,kid.pt);
+    const need=Math.floor(kid.pt/20);
+    if(kid.stk.length>need)kid.stk.length=need;
+    d[i]=[];
+  });
+  S.done[k]=d;
+  tone(392,0,.18);tone(294,.12,.25);
+  save();render();toast("きょうの分を リセットしました 🔄");
+}
+function resetBtn(){
+  return `<button class="reset" data-reset="0">🔄 きょうの ${S.kids[S.kid].name} の分を リセット</button>
+          <button class="reset" data-reset="1" style="margin-top:-8px">🔄🔄 きょうの ふたりとも リセット</button>`;
+}
+function toast(m){const e=document.createElement("div");e.className="toast";e.textContent=m;document.body.appendChild(e);setTimeout(()=>e.remove(),1600);}
+
+function render(){
+  const k=key(CUR),c=CAL[k]||["F","日",""],p=c[0],dow=c[1];
+  document.body.className=S.w==="rain"?"rain":"";
+  document.documentElement.style.setProperty("--c1",S.w==="rain"?"var(--rain1)":"var(--sun1)");
+  document.documentElement.style.setProperty("--c2",S.w==="rain"?"var(--rain2)":"var(--sun2)");
+  document.documentElement.style.setProperty("--c3",S.w==="rain"?"var(--rain3)":"var(--sun3)");
+  $("#bSun").className=S.w==="sun"?"on":"";$("#bRain").className=S.w==="rain"?"on":"";
+  $("#pBadge").textContent=p==="F"?"休":p==="S"?"泳":p;
+  $("#pBadge").style.background=PCOL[p];
+  $("#pName").textContent=PNAME[p];
+  $("#pDate").textContent=(+k.slice(0,2))+"月"+(+k.slice(3))+"日（"+dow+"）・"+(S.w==="sun"?"はれ ☀️":"あめ ☔️");
+  $("#pMemo").innerHTML=c[2]?("📌 "+c[2]):"きょうも いい1日にしよう！";
+  const kid=S.kids[S.kid];
+
+  /* --- きょう --- */
+  const tl=buildTL(p,S.w,dow),n=nowMin();
+  let cur=-1;for(let i=0;i<tl.length;i++){if(hm(tl[i][0])<=n)cur=i;}
+  $("#vToday").innerHTML=whoHTML()+'<div class="tl">'+tl.map((e,i)=>{
+    const d=has("t",e[0]+i),go=e[4]&&isToday()&&Math.abs(hm(e[0])-n)<=15&&!d;
+    return `<div class="ev ${d?"done":""} ${isToday()&&i===cur?"now":""} ${go?"go":""}" data-i="${i}" data-t="${e[0]}" id="ev${i}">
+      <div class="dot">${e[1]}</div>
+      <div class="body" data-tap="t|${e[0]+i}|5">
+        <div><div class="t">${e[0]}</div><div class="n">${e[2]}</div>${e[3]?`<div class="note">${e[3]}</div>`:""}</div>
+        <div class="chk">✔</div>
+      </div></div>`;}).join("")+"</div>"+resetBtn();
+
+  /* --- ミッション --- */
+  $("#vMission").innerHTML=whoHTML()+'<div class="card"><h3>🎯 きょうのミッション</h3>'+
+    MISSIONS.map(m=>`<div class="ms ${has("m",m[0])?"done":""}" data-tap="m|${m[0]}|${m[3]}">
+      <span class="e">${m[1]}</span><span class="n">${m[2]}</span><span class="pt">+${m[3]}pt</span>
+      <div class="chk">✔</div></div>`).join("")+
+    '</div><div class="card"><h3>📝 おうち学習のじかん</h3><div class="ms" style="background:#FFF8E1">'+
+    '<span class="e">⏰</span><span class="n">'+(p==="A"||p==="C"||p==="S"?"8:00〜11:00":"8:00〜12:00")+' は 学習タイム</span></div>'+
+    '<div class="ms" style="background:#FFF8E1"><span class="e">🎮</span><span class="n">ミッションが おわったら じゆう時間！</span></div></div>'+resetBtn();
+
+  /* --- シールちょう --- */
+  const slots=Math.max(20,Math.ceil((kid.stk.length+1)/5)*5);
+  $("#vSticker").innerHTML=whoHTML()+
+   `<div class="score">
+      <div class="sc"><div class="v">${kid.pt-kid.used}</div><div class="l">つかえるポイント</div></div>
+      <div class="sc"><div class="v">${kid.stk.length}</div><div class="l">シールのまい数</div></div>
+      <div class="sc"><div class="v">${kid.pt}</div><div class="l">ぜんぶで ためたpt</div></div>
+    </div>
+    <div class="card"><h3>🏅 ${kid.name} のシールちょう <span style="font-size:11px;color:#6E6A8A;font-weight:700">20ptで1まい</span></h3>
+      <div class="sheet">${Array.from({length:slots},(_,i)=>
+        `<div class="sl ${i<kid.stk.length?"f":""}">${kid.stk[i]||""}</div>`).join("")}</div></div>
+    <div class="card"><h3>🎁 ごほうび こうかん</h3>
+      ${SHOP.map((s,i)=>`<div class="shop"><span class="e">${s[0]}</span><span class="n">${s[1]}</span>
+        <span class="pt" style="margin-left:auto;font-size:12px;color:#6E6A8A">${s[2]}pt</span>
+        <button data-buy="${i}" ${(kid.pt-kid.used)<s[2]?"disabled":""}>こうかん</button></div>`).join("")}
+      <div style="font-size:11px;color:#6E6A8A;margin-top:6px">※ こうかんは 週まつ（土・日）に おうちの人といっしょに！</div></div>`;
+
+  /* --- カレンダー --- */
+  $("#vCal").innerHTML=cal(2026,7)+cal(2026,8)+
+   `<div class="cal"><div class="lg">
+     <span><i class="pA"></i>A 水泳＋塾</span><span><i class="pB"></i>B 塾のみ</span>
+     <span><i class="pC"></i>C 水泳＋そろばん</span><span><i class="pD"></i>D そろばんのみ</span>
+     <span><i class="pS"></i>水泳のみ</span><span><i class="pF"></i>お休み</span></div></div>`;
+
+  if(isToday()&&cur>=0)setTimeout(()=>{const e=$("#ev"+cur);if(e&&$("#vToday").className!=="hide")e.scrollIntoView({block:"center",behavior:"smooth"});},120);
+}
+function whoHTML(){return `<div class="who">${S.kids.map((k,i)=>
+  `<button class="${S.kid===i?"on":""}" data-kid="${i}">${S.kid===i?
+    `<input value="${k.name}" data-name="${i}">`:k.name} <span style="font-size:12px;color:#6E6A8A">${k.pt-k.used}pt</span></button>`).join("")}</div>`;}
+
+function cal(y,m){
+  const first=new Date(y,m-1,1).getDay(),last=new Date(y,m,0).getDate();
+  let h=`<div class="cal"><h3>🗓️ ${m}月</h3><div class="g">`+
+    ["日","月","火","水","木","金","土"].map(d=>`<div class="h">${d}</div>`).join("");
+  for(let i=0;i<first;i++)h+='<div class="d empty"></div>';
+  for(let d=1;d<=last;d++){
+    const k=String(m).padStart(2,"0")+"-"+String(d).padStart(2,"0"),c=CAL[k];
+    const iso=`${y}-${k}`;
+    h+=`<div class="d ${CUR===iso?"sel":""}" ${c?`data-day="${iso}"`:""} style="${c?"":"opacity:.35"}">
+      <div class="num">${d}</div>${c?`<div class="p p${c[0]}">${c[0]==="F"?"休":c[0]==="S"?"泳":c[0]}</div>`:""}
+      ${c&&c[2].indexOf("ケアタイム")>=0?'<div style="font-size:9px">☕</div>':""}
+      ${c&&c[2].indexOf("お盆")>=0?'<div style="font-size:9px">🏮</div>':""}</div>`;
+  }
+  return h+"</div></div>";
+}
+
+/* ================= アラーム ================= */
+let fired={},notifOK=false;
+function checkAlarm(){
+  if(!isToday())return;
+  const k=key(CUR),c=CAL[k];if(!c)return;
+  const tl=buildTL(c[0],S.w,c[1]),n=nowMin();
+  tl.forEach(e=>{
+    if(!e[4])return;const t=hm(e[0]);
+    [[t-10,"あと10ぷんで しゅっぱつ！"],[t,"いま しゅっぱつ！ いってらっしゃい！"]].forEach(([mm,msg])=>{
+      const id=k+e[0]+mm;
+      if(n===mm&&!fired[id]){fired[id]=1;popAlarm(e[1],msg,e[2]+(e[3]?" / "+e[3]:""));}
+    });
+  });
+}
+function popAlarm(emo,title,sub){
+  $("#alE").textContent=emo;$("#alT").textContent=title;$("#alP").textContent=sub;
+  $("#al").classList.add("on");sAlarm();
+  const iv=setInterval(sAlarm,2400);$("#al").dataset.iv=iv;
+  if(notifOK)try{new Notification("なつやすみ大作戦",{body:title+"\n"+sub});}catch(e){}
+  if(navigator.vibrate)navigator.vibrate([200,100,200,100,400]);
+}
+$("#alBtn").onclick=()=>{clearInterval($("#al").dataset.iv);$("#al").classList.remove("on");};
+$("#bell").onclick=async()=>{
+  try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();await AC.resume();}catch(e){}
+  tone(880,0,.15);
+  if("Notification" in window){const p=await Notification.requestPermission();notifOK=(p==="granted");}
+  $("#bell").textContent=notifOK?"🔔 アラーム オン！（アプリを ひらいたままにしてね）":"🔔 音アラーム オン！（画面を ひらいたままにしてね）";
+  $("#bell").style.background="#4CD07D";$("#bell").style.color="#fff";
+};
+
+/* ================= 操作 ================= */
+document.addEventListener("click",e=>{
+  const tap=e.target.closest("[data-tap]");
+  if(tap){const[t,id,pt]=tap.dataset.tap.split("|");toggle(t,id,+pt);return;}
+  const kd=e.target.closest("[data-kid]");
+  if(kd){S.kid=+kd.dataset.kid;save();render();return;}
+  const buy=e.target.closest("[data-buy]");
+  if(buy){const s=SHOP[+buy.dataset.buy],kid=S.kids[S.kid];
+    if(kid.pt-kid.used>=s[2]&&confirm(s[1]+" と こうかんする？（"+s[2]+"pt）")){kid.used+=s[2];sLevel();toast(s[0]+" こうかんしたよ！");save();render();}return;}
+  const rs=e.target.closest("[data-reset]");
+  if(rs){resetDay(rs.dataset.reset==="1");return;}
+  const day=e.target.closest("[data-day]");
+  if(day){CUR=day.dataset.day;$("#dt").value=CUR;switchView("Today");render();return;}
+});
+document.addEventListener("change",e=>{
+  if(e.target.dataset.name!==undefined){S.kids[+e.target.dataset.name].name=e.target.value||"なまえ";save();}
+});
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>switchView(b.dataset.v));
+function switchView(v){
+  document.querySelectorAll(".tabs button").forEach(b=>b.className=b.dataset.v===v?"on":"");
+  ["Today","Mission","Sticker","Cal"].forEach(x=>$("#v"+x).className=x===v?"":"hide");
+  window.scrollTo({top:0});if(v==="Today")render();
+}
+function setW(w,manual){S.w=w;if(manual){S.manual=true;S.autoDay=key(CUR);}save();render();}
+$("#bSun").onclick=()=>setW("sun",true);
+$("#bRain").onclick=()=>setW("rain",true);
+$("#dt").onchange=()=>{if(CAL[key($("#dt").value)]){CUR=$("#dt").value;save();autoWeather();render();}};
+
+/* ================= 天気じどう判定（Open-Meteo・APIキーふよう） ================= */
+const HOME={lat:34.7217,lon:135.3617,name:"甲子園あたり"}; // 位置情報がとれないときのばしょ
+function getPos(){
+  return new Promise(res=>{
+    if(!navigator.geolocation)return res(null);
+    navigator.geolocation.getCurrentPosition(
+      p=>res({lat:p.coords.latitude,lon:p.coords.longitude,name:"いまいるばしょ"}),
+      ()=>res(null),{timeout:6000,maximumAge:1800000});
+  });
+}
+async function autoWeather(){
+  const box=$("#auto"),d=CUR;
+  // 手動でえらんだ日は じょうしょがき しない
+  if(S.manual&&S.autoDay===key(d)){box.textContent="✋ 天気は 手動でえらんだままです（ボタンで かえられるよ）";return;}
+  box.textContent="🛰️ きょうの天気を しらべています…";
+  const pos=(await getPos())||HOME;
+  try{
+    const u=`https://api.open-meteo.com/v1/forecast?latitude=${pos.lat}&longitude=${pos.lon}`
+      +`&daily=precipitation_probability_max,weathercode&timezone=Asia%2FTokyo&start_date=${d}&end_date=${d}`;
+    const r=await fetch(u);
+    const j=await r.json();
+    const pop=j.daily.precipitation_probability_max[0];
+    const w=(pop>=50)?"rain":"sun";
+    S.w=w;S.manual=false;S.autoDay=key(d);save();render();
+    box.textContent=`🛰️ ${pos.name}・雨のかくりつ ${pop}% ➡ ${w==="rain"?"☔️ あめモード":"☀️ はれモード"}（ボタンで かえられるよ）`;
+  }catch(e){
+    box.textContent="🛰️ 天気が とれませんでした。ボタンで えらんでね";
+  }
+}
+
+/* ================= 起動 ================= */
+(async()=>{
+  const s=await DB.get("natsu2026");if(s)S=Object.assign(S,s);
+  if(!S.kids[0].name||S.kids[0].name==="ふたご①")S.kids[0].name="秋";
+  if(!S.kids[1].name||S.kids[1].name==="ふたご②")S.kids[1].name="晴";
+  const t=new Date().toISOString().slice(0,10);
+  CUR=CAL[key(t)]?t:"2026-07-16";
+  $("#dt").value=CUR;
+  render();
+  autoWeather();
+  setInterval(()=>{checkAlarm();if(isToday())render();},30000);
+})();
+</script>
+</body>
+</html>
